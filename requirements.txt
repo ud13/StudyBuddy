@@ -1,0 +1,9 @@
+numpy==1.26.4
+pandas==2.2.2
+matplotlib==3.8.4
+huggingface_hub==0.22.2
+jupyter==1.0.0
+chainlit==0.7.700
+openai==1.23.6
+tiktoken==0.6.0
+python-dotenv==1.0.1
