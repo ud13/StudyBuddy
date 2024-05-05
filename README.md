@@ -1,6 +1,6 @@
 ---
 title: StudyBuddy
-emoji: 🐠
+emoji: 🤓
 colorFrom: pink
 colorTo: purple
 sdk: docker
