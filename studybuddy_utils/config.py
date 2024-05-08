@@ -12,13 +12,15 @@ class Config:
     persist_dir='./storage_test'
 
     # the file name
-    pdf_path='data/midterm-data.pdf'
+    # pdf_path='data/midterm-data.pdf'
+    pdf_path='https://www.deyeshigh.co.uk/downloads/literacy/world_book_day/the_hitchhiker_s_guide_to_the_galaxy.pdf'
     pickle_path='data/nodes.pickle'
+    
 
     # paramteters for chunking
     verbose=True
-    chunk_size=128
-    chunk_overlap=30
+    chunk_size=200
+    chunk_overlap=0
     # separator=" "  Blank is default
 
     # parametrs for retrieval

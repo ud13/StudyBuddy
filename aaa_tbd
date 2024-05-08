@@ -8,3 +8,10 @@ Chatmodel analog aufsetzen
                         max_tokens=self.max_tokens,
                         streaming=self.streaming)
                         self.settings.context_window = self.context_window
+
+
+CocumentLoader mit LlamaIndex?
+
+tbds in text_util - wozu ist das gut?
+
+was ist #type ignore siehe DocumentLoader

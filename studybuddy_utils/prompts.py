@@ -30,3 +30,14 @@ class ThirdPrompts:
 
     Seamless LangSmith Tracing Integration As your chains get more and more complex, it becomes increasingly important to understand what exactly is happening at every step. With LCEL, all steps are automatically logged to LangSmith for maximal observability and debuggability.
     """
+    
+class RAGPrompt:
+    prompt = """
+    CONTEXT:
+    {context}
+
+    QUERY:
+    {question}
+
+    Only use the context provided. If the context provided does not answer the question, then answer with 'I don't know the answer to that question based on the provided context.'. 
+    """
