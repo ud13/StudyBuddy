@@ -1,9 +1,7 @@
-import os
+
 from flask import Flask, render_template, render_template_string, request, session
-from studybuddy_utils.text_utils import SBDocLoader
-from studybuddy_utils.vectorstore import IndexBuilder
-from studybuddy_utils.reasoning import SimpleChain
-from studybuddy_utils.flaskchat import SBFlaskBackend
+from studybuddy_utils.app_helper import AppHelper
+
 
 from uuid import uuid4
 
@@ -17,7 +15,7 @@ app = Flask(__name__)
 #       the session data.
 app.secret_key = 'BAD_SECRET_KEY'
 
-backend = SBFlaskBackend()
+apphelper = AppHelper()
 chain = None
 
 
@@ -32,17 +30,16 @@ def prepare_index():
         session['uuid'] = session_uuid
         session['total_grade']=0
         print(f'**** session_uuid={session_uuid}')
-        filepath=backend.upload_handler(request.files, session_uuid=session_uuid )
+        filepath = apphelper.upload_handler(request.files, session_uuid=session_uuid )
         print(f'***** filepath={filepath}')
-        
-        # load the docs and create chunks
-        sbdocs_loader = SBDocLoader(filepath)
-        chunks = sbdocs_loader.load_and_parse_pdf(filepath)
-
-        # embed and create index (vector store)
-        IndexBuilder(chunks, session_uuid=session_uuid)
-        question = 'dynamic question 1'
+        json_response = apphelper.generate_question(filepath, session_uuid)
+        question = json_response['question']
+        model_answer = json_response['answer']
         session['question'] = question
+        session['model_answer'] = model_answer
+        
+        print(f'*** question={question}')
+        print(f'*** model_answer={model_answer}')
         answer = ''
         session['answer'] = answer
         return render_template('question.html', question=question, answer=answer )
@@ -53,14 +50,11 @@ def prepare_index():
 def chat():
     session_uuid = session['uuid']
     print(f'***** session_uuid')
-    index = IndexBuilder(None, session_uuid=session_uuid)
-    qdrant_retriever = index.retriever
-    chain = SimpleChain(qdrant_retriever)
-    print(f'***** chain found={type(chain)}')
-    user_answer = request.form['user_answer']
-    print(f'**** user_answer={user_answer}')
-    response = chain.reason(user_answer)
-    print(f'**** response={response}')
+    user_answer = request.form.get('user_answer')
+    # tbd hier grading einbauen
+    json_response = apphelper.generate_question(None, session_uuid)
+    print(json_response)
+    
     total_grade = 13  # tbd ausrechnen
     grade = 7 # tbd ermitteln
     session['total_grade'] = total_grade
@@ -79,11 +73,20 @@ def decide_next_step():
     print(f'**** form value={request.form.get("button_action")}')
        
     if request.form.get('button_action') == 'next':
-        question = 'dynamic question 2'
+        json_response = apphelper.generate_question(None, session["uuid"])
+        question = json_response['question']
+        model_answer = json_response['answer']
         session['question'] = question
+        session['model_answer'] = model_answer
+        
+        print(f'*** question={question}')
+        print(f'*** model_answer={model_answer}')
+        answer = ''
+        session['answer'] = answer
         answer = ''
         session['answer'] = answer
         session['grade'] = 0
+        
         return render_template('question.html', 
                                question=question, 
                                answer=answer )

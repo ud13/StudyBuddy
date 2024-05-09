@@ -5,13 +5,13 @@ from operator import itemgetter
 from langchain.schema.output_parser import StrOutputParser
 from langchain.schema.runnable import RunnablePassthrough
 from studybuddy_utils.models import SBChatModel
-from studybuddy_utils.prompts import RAGPrompt
+from studybuddy_utils.prompts import TestPrompt
 
 
 class SimpleChain:
     def __init__(self, retriever):
         self.openai_chat_model = SBChatModel().openai_chat_model
-        self.rag_prompt = ChatPromptTemplate.from_template(RAGPrompt().prompt)
+        self.rag_prompt = ChatPromptTemplate.from_template(TestPrompt().prompt)
         self.retriever = retriever
         
     def reason(self, question):

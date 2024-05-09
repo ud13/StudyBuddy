@@ -6,6 +6,8 @@ from studybuddy_utils.text_utils import SBDocLoader
 from studybuddy_utils.vectorstore import IndexBuilder
 from studybuddy_utils.reasoning import SimpleChain
 from studybuddy_utils.config import Config
+from studybuddy_utils.prompts import TestPrompt
+import json
 from uuid import uuid4
 
 load_dotenv()
@@ -25,8 +27,9 @@ qdrant_retriever = index.retriever
 
 # execute the chain
 chain = SimpleChain(qdrant_retriever)
-question = "What is the meaning of the number 42 in Douglas Adam's Hitchhicker's Guide?"
-response = chain.reason(question)
-
+query = TestPrompt.query
+response = chain.reason(query)
+json_response = json.loads(response)
 # display the result
-print(response)
+print(json_response['question'])
+print(json_response['answer'])

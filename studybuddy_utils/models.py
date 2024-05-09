@@ -9,6 +9,9 @@ class SBEmbeddingsModel:
 
 class SBChatModel:
     def __init__(self):
-        self.openai_chat_model = ChatOpenAI(model=Config.chat_model)       
+        self.openai_chat_model = ChatOpenAI(model=Config.chat_model,
+                                            temperature=Config.temperature,
+                                            max_tokens=Config.max_tokens,
+                                            )
         print("ChatModel set " + self.openai_chat_model.model_name)
     
