@@ -1,0 +1,65 @@
+body {
+    background-color: #191627;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: #ffffff;
+  }
+h1 h2 h3 {
+    text-align: left;
+}
+.logo {
+    width: 100%;
+    height: 100%;
+}
+.header {
+    background-color: #191627;
+    width: 20%;
+}
+.welcome {
+    text-align: center;
+}
+.content {
+    margin-left: 20%;
+    width: 60%;
+    font-size: 1.5em;
+    padding: 50px;
+}
+.button {
+    background-color: #F7C164;
+    font-size: 20px;
+    padding: 10px 2cqi;
+    border-radius: 10px;
+}
+.file-section {
+    padding: 50px 0px;
+}
+
+input[type="file"]::file-selector-button
+ {
+    background-color: #F7C164;;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 20px;
+ }
+ .question {
+    margin: 50px 0px;
+ }
+ .answer {
+    margin: 50px 0px;
+ }
+ .explanation {
+    margin: 50px 0px;
+ }
+ .post-answer {
+    margin-top: 50px;
+ }
+ .answer-textarea {
+    margin-top: 20px;
+    font-size: 15px;
+    width: 100%;           /* Control the width */
+    height: 300px;        /* Control the height */
+    padding: 10px;        /* Add inner spacing */
+    border: 2px solid #F7C164;  /* Set a border */
+    color:#191627;
+    border-radius: 10px;   /* Add rounded corners */
+    resize: both;         /* Allow resizing (optional) */
+  }

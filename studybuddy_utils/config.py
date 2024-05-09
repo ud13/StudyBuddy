@@ -12,10 +12,10 @@ class Config:
     persist_dir='./storage_test'
 
     # the file name
-    # pdf_path='data/midterm-data.pdf'
-    pdf_path='https://www.deyeshigh.co.uk/downloads/literacy/world_book_day/the_hitchhiker_s_guide_to_the_galaxy.pdf'
-    pickle_path='data/nodes.pickle'
-    
+    # pdf_path='data/AI-Powered_Search_v20-6-30.pdf'
+    # pdf_path='https://www.deyeshigh.co.uk/downloads/literacy/world_book_day/the_hitchhiker_s_guide_to_the_galaxy.pdf'
+    # pickle_path='data/nodes.pickle'
+    pdf_path='data/sudel.pdf'
 
     # paramteters for chunking
     verbose=True
@@ -34,6 +34,12 @@ class Config:
     max_tokens=2048
     streaming=True
     context_window=4096
+    top_p=1
+    frequency_penalty=0
+    presence_penalty=0
+    
+    # parameters for flask
+    uploads_path='uploads'
 
 
 

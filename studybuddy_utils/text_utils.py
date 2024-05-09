@@ -20,12 +20,11 @@ class SBDocLoader:
         """      
     # tbd use LlamaIndex here?
     # tbd is async possible or necessary?
-    def load_and_parse_pdf_dir(self):
-        docs = PyMuPDFLoader(Config.pdf_path).load()
+    def load_and_parse_pdf(self, path):
+        docs = PyMuPDFLoader(path).load()
         chunks = self.chunk_docs(docs)
         return(chunks)
     
-
     # length function for the text_splitter
     def tiktoken_len(self,text):
         tokens = tiktoken.encoding_for_model(Config.chat_model).encode(

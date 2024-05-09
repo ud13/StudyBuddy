@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>StudyBuddy</title>
+    <link rel="stylesheet" type="text/css" href="static/styles.css"> 
+
+</head>
+<body background>
+    <div class=header>
+         <img src='static/sb_icon.png' class=logo>
+    </div>
+    <div class=content>
+        <h3>Answer this Question</h3>
+        <div class=question>
+            {{ question }}
+        </div>
+        <div class=answer>
+            <form action="/answer" method="post">               
+                <br>
+                    <textarea class="answer-textarea" name="user_answer"  required />{{ answer }}</textarea>
+                <div class=post-answer>
+                    <button type="submit" class=button>Submit Your Answer</button>
+                </div>
+            </form>
+        </div>
+    <div>
+</body>
+</html>
