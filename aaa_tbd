@@ -1,17 +1,1 @@
-Prüfen, ob EmbeddingsModel wirklich das tut, was ich meine
-
-
-
-Chatmodel analog aufsetzen
-        self.settings.llm = OpenAI(model=self.model_name, 
-                        temperature=self.temperature,
-                        max_tokens=self.max_tokens,
-                        streaming=self.streaming)
-                        self.settings.context_window = self.context_window
-
-
-CocumentLoader mit LlamaIndex?
-
-tbds in text_util - wozu ist das gut?
-
-was ist #type ignore siehe DocumentLoader
+tbdel
