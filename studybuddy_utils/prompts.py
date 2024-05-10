@@ -3,7 +3,7 @@
 class TestPrompt:
     prompt = """
     SYSTEM: 
-    You are an university professor for undergraduate compute science specialized in Large Language Models.
+    You are an university professor for undergraduate compute science specialized in Information Retrieval.
     Generate a question for a written closed-book exam and generate a short answer which merits a top grade.
     
      
@@ -20,7 +20,7 @@ class TestPrompt:
 
     query = """
     
-    Topic of the question is fine-tuning.
+    Topic of the question is 'inverted index'.
     
     """
 

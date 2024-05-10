@@ -46,6 +46,8 @@ class AppHelper:
         qdrant_retriever = index.retriever
         chain = SimpleChain(qdrant_retriever)
         query = TestPrompt.query
+        print(f'****** query={query}')
         response = chain.reason(query)
         json_response = json.loads(response)
         return json_response
+    

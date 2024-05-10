@@ -15,7 +15,7 @@ class Config:
     # pdf_path='data/AI-Powered_Search_v20-6-30.pdf'
     # pdf_path='https://www.deyeshigh.co.uk/downloads/literacy/world_book_day/the_hitchhiker_s_guide_to_the_galaxy.pdf'
     # pickle_path='data/nodes.pickle'
-    pdf_path='data/sudel.pdf'
+    pdf_path='data/AI-Powered_Search_v20.pdf'
 
     # paramteters for chunking
     verbose=True

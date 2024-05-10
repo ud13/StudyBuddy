@@ -73,6 +73,7 @@ def decide_next_step():
     print(f'**** form value={request.form.get("button_action")}')
        
     if request.form.get('button_action') == 'next':
+        print (f'*** next pressed')
         json_response = apphelper.generate_question(None, session["uuid"])
         question = json_response['question']
         model_answer = json_response['answer']
