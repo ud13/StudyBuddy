@@ -1,13 +1,16 @@
 # All about Vector Store
 from studybuddy_utils.config import Config
 from langchain_community.vectorstores import Qdrant
+from langchain_community.vectorstores import FAISS
 
 from studybuddy_utils.models import SBEmbeddingsModel
 
 
 from qdrant_client import QdrantClient, models
 
-class IndexBuilder:
+
+class IndexBuilderQdrant:
+    # Not working should use a server-database and not local persistence
     def __init__(self, split_chunks, session_uuid: str):
         print(f'**** session_uuid={session_uuid}')
         persist_dir=Config.persist_dir
@@ -30,7 +33,15 @@ class IndexBuilder:
                 client=client, 
                 collection_name=Config.collection_name, 
                 embeddings=embedding_model,
-                )
+            )
             
         self.retriever = self.qdrant_vectorstore.as_retriever()
-        
+    
+class IndexBuilderFAISS:
+    def __init__(self, split_chunks, session_uuid: str):
+        print(f'**** session_uuid={session_uuid}')
+        embedding_model = SBEmbeddingsModel().embedding_model
+        self.vector_store = FAISS.from_documents(split_chunks, embedding_model)
+        self.retriever = self.vector_store.as_retriever()
+
+            

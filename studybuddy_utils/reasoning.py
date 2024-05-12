@@ -2,16 +2,18 @@
 
 from langchain_core.prompts import ChatPromptTemplate
 from operator import itemgetter
-from langchain.schema.output_parser import StrOutputParser
+
 from langchain.schema.runnable import RunnablePassthrough
 from studybuddy_utils.models import SBChatModel
-from studybuddy_utils.prompts import TestPrompt
+from studybuddy_utils.prompts import ExamPrompt
+from studybuddy_utils.prompts import EvaluationPrompt
+from studybuddy_utils.models import SBChatModel
+from langchain_core.prompts import ChatPromptTemplate
 
-
-class SimpleChain:
+class SBChains:
     def __init__(self, retriever):
         self.openai_chat_model = SBChatModel().openai_chat_model
-        self.rag_prompt = ChatPromptTemplate.from_template(TestPrompt().prompt)
+        self.rag_prompt = ChatPromptTemplate.from_template(ExamPrompt().prompt)
         self.retriever = retriever
         
     def reason(self, question):
@@ -31,5 +33,21 @@ class SimpleChain:
         )
 
         response = retrieval_augmented_qa_chain.invoke({"question" : question})
-        return response["response"].content
+        print(f'***** response={response["response"].content}')
+        return response['response'].content
+    
+    def one_step_reason(self, question, ideal_answer, answer):
+        # tbd benöigt sicher noch einen Retriever, um noch Kontext in die Eval reinzubringen
+        chat_prompt = ChatPromptTemplate.from_messages([
+                    ("system", EvaluationPrompt.system_prompt),
+                    ("human", EvaluationPrompt.human_prompt)
+                ])
+        chain = chat_prompt | SBChatModel().openai_chat_model
+        
+        response = chain.invoke({"question": question, 
+                        "ideal_answer": ideal_answer,
+                        "student_answer": answer})
+        return response.content
+            
+            
             

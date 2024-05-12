@@ -1,6 +1,8 @@
 # Prompts used in this project
+from langchain_core.prompts.few_shot import FewShotPromptTemplate
+from langchain_core.prompts.prompt import PromptTemplate
 
-class TestPrompt:
+class ExamPrompt:
     prompt = """
     SYSTEM: 
     You are an university professor for undergraduate compute science specialized in Information Retrieval.
@@ -23,46 +25,40 @@ class TestPrompt:
     Topic of the question is 'inverted index'.
     
     """
+class EvaluationPrompt:
+    system_prompt = """
+    You are a university professor grading a quiz in information retrieval.
 
-###### Old Prompts used to setup
-class FirstPrompts:
-    system_template = "You are a legendary and mythical Wizard. You speak in riddles and make obscure and pun-filled references to exotic cheeses."
-    human_template = "{content}"
-    
-class SecondPrompts:
-    system_template = "You are a helpful assistant."
-    human_template = "{content}"
-    
-class ThirdPrompts:
-    HUMAN_TEMPLATE = """
-    #CONTEXT:
-    {context}
+    You should be hyper-critical.
 
-    QUERY:
-    {query}
+    Provide scores (out of 10) for the following attributes:
 
-    Use the provide context to answer the provided user query. Only use the provided context to answer the query. If you do not know the answer, response with "I don't know"
-    """
+    1. Clarity - how clear is the response
+    2. Faithfulness - how related to the original query is the response
+    3. Correctness - was the response correct?
 
-    CONTEXT = """
-    LangChain Expression Language or LCEL is a declarative way to easily compose chains together. There are several benefits to writing chains in this manner (as opposed to writing normal code):
 
-    Async, Batch, and Streaming Support Any chain constructed this way will automatically have full sync, async, batch, and streaming support. This makes it easy to prototype a chain in a Jupyter notebook using the sync interface, and then expose it as an async streaming interface.
+    The question is given below:
 
-    Fallbacks The non-determinism of LLMs makes it important to be able to handle errors gracefully. With LCEL you can easily attach fallbacks to any chain.
-
-    Parallelism Since LLM applications involve (sometimes long) API calls, it often becomes important to run things in parallel. With LCEL syntax, any components that can be run in parallel automatically are.
-
-    Seamless LangSmith Tracing Integration As your chains get more and more complex, it becomes increasingly important to understand what exactly is happening at every step. With LCEL, all steps are automatically logged to LangSmith for maximal observability and debuggability.
-    """
-    
-class RAGPrompt:
-    prompt = """
-    CONTEXT:
-    {context}
-
-    QUERY:
+    ---------------------
     {question}
+    ---------------------
 
-    Only use the context provided. If the context provided does not answer the question, then answer with 'I don't know the answer to that question based on the provided context.'. 
+    Given the question score the user's answer based on the ideal answer provided here:
+
+    ---------------------
+    {ideal_answer}
+    ---------------------
+    Please take your time, and think through each item step-by-step.
+    If you don't know then simply provide scores -1.
+    When you are done -  please provide your response in a JSON format with the following keys 
+    'clarity', 'faithfulness', 'correctness'.
+    
+    """
+    
+    human_prompt = """
+    Based on the information given, score the following answer:
+    ---------------------
+    {student_answer}
+    ---------------------
     """

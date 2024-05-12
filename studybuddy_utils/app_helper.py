@@ -1,17 +1,18 @@
 
 from werkzeug.utils import secure_filename
-from studybuddy_utils.vectorstore import IndexBuilder
-from studybuddy_utils.reasoning import SimpleChain
+from studybuddy_utils.vectorstore import IndexBuilderQdrant
+from studybuddy_utils.reasoning import SBChains
 from studybuddy_utils.config import Config
 from studybuddy_utils.text_utils import SBDocLoader
-from studybuddy_utils.vectorstore import IndexBuilder
-from studybuddy_utils.prompts import TestPrompt
+from studybuddy_utils.vectorstore import IndexBuilderFAISS
+from studybuddy_utils.prompts import ExamPrompt
+
 import os
 import json
 
 class AppHelper:
     def __init__(self):
-        self.readme = 'tbd constructor'
+        self.sbchains = None
         
     def upload_handler(self, files, session_uuid: str):
         if 'file' not in files:
@@ -42,12 +43,16 @@ class AppHelper:
             chunks = sbdocs_loader.load_and_parse_pdf(filepath)
 
         # embed and create index (vector store)
-        index = IndexBuilder(chunks, session_uuid=session_uuid)
-        qdrant_retriever = index.retriever
-        chain = SimpleChain(qdrant_retriever)
-        query = TestPrompt.query
+        index = IndexBuilderFAISS(chunks, session_uuid=session_uuid)
+        retriever = index.retriever
+        self.sbchains = SBChains(retriever)
+        query = ExamPrompt.query
         print(f'****** query={query}')
-        response = chain.reason(query)
+        response = self.sbchains.reason(query)
         json_response = json.loads(response)
         return json_response
     
+    def evaluate_question(self, question, ideal_answer, answer):
+        response = self.sbchains.one_step_reason(question, ideal_answer, answer)
+        json_response = json.loads(response)
+        return json_response

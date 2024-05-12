@@ -1,14 +1,14 @@
 
-from flask import Flask, render_template, render_template_string, request, session
+from flask import Flask, g, render_template, render_template_string, request, session
 from studybuddy_utils.app_helper import AppHelper
-
-
 from uuid import uuid4
 
 from dotenv import load_dotenv
 load_dotenv()
 
+
 app = Flask(__name__)
+  
 
 # Details on the Secret Key: https://flask.palletsprojects.com/en/2.3.x/config/#SECRET_KEY
 # NOTE: The secret key is used to cryptographically-sign the cookies used for storing
@@ -21,9 +21,8 @@ chain = None
 
 @app.route('/', methods=['GET', 'POST'])
 def prepare_index():
-    # create a uuid to distinguish this session from others
-    
-    print(f'**** request.method={request.method}')
+
+    print(f'**** request.method={request.method}')    
     if request.method == 'POST':
         session_uuid = 'dev'
         # session_uuid=uuid4().hex[0:8]  # to be uncommented for prod
@@ -33,10 +32,13 @@ def prepare_index():
         filepath = apphelper.upload_handler(request.files, session_uuid=session_uuid )
         print(f'***** filepath={filepath}')
         json_response = apphelper.generate_question(filepath, session_uuid)
+        
+        print(f'**** json_response={json_response}')
         question = json_response['question']
         model_answer = json_response['answer']
         session['question'] = question
         session['model_answer'] = model_answer
+        session['filepath'] = filepath
         
         print(f'*** question={question}')
         print(f'*** model_answer={model_answer}')
@@ -48,24 +50,37 @@ def prepare_index():
 
 @app.route('/answer', methods=['GET', 'POST'])
 def chat():
+    # create a uuid to distinguish this session from others
     session_uuid = session['uuid']
-    print(f'***** session_uuid')
+    print(f'***** session_uuid={session_uuid}')
     user_answer = request.form.get('user_answer')
-    # tbd hier grading einbauen
-    json_response = apphelper.generate_question(None, session_uuid)
-    print(json_response)
+    model_answer = session['model_answer'] 
+    question = session['question'] 
     
-    total_grade = 13  # tbd ausrechnen
-    grade = 7 # tbd ermitteln
+    # tbd hier scores fertig ausrechner
+    json_response = apphelper.evaluate_question(question, 
+                                                model_answer, 
+                                                user_answer)
+    print(json_response)
+    clarity = json_response['clarity']
+    faithfulness = json_response['faithfulness']
+    correctness = json_response['correctness']
+    
+    grade = 0.9 * correctness + 0.05 * clarity + 0.05 * faithfulness
+    
+    total_grade = session['total_grade']
+    total_grade += grade
     session['total_grade'] = total_grade
+
     session['grade'] = grade
     session['answer'] = user_answer
     question = session['question']
     return render_template('grade.html', 
-                           question=question, 
-                           answer=user_answer, 
-                           grade=grade, 
-                           total_grade=total_grade)
+                        question=question, 
+                        answer=user_answer, 
+                        grade=round(grade, 2), 
+                        total_grade=round(total_grade, 2)
+    )
     
 @app.route('/next', methods=['GET', 'POST'])
 def decide_next_step():
@@ -74,7 +89,8 @@ def decide_next_step():
        
     if request.form.get('button_action') == 'next':
         print (f'*** next pressed')
-        json_response = apphelper.generate_question(None, session["uuid"])
+        filepath = session['filepath']
+        json_response = apphelper.generate_question(filepath, session["uuid"])
         question = json_response['question']
         model_answer = json_response['answer']
         session['question'] = question
