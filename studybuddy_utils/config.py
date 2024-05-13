@@ -2,7 +2,7 @@
 
 
 class Config:
-    # select the model-type to use openai ud-ir-m
+    # select the model-type to use 'openai' 'ud-ir-m'
     embedding_type='ud-ir-m'
     # Parameters for embedding  model OpenAI
     # embeddings_model_name='text-embedding-ada-002'
