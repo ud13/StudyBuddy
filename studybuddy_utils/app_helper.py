@@ -34,8 +34,7 @@ class AppHelper:
         print(f'****** file_size={file_size}')
         return filepath
 
-
-    def generate_question(self, filepath, session_uuid):
+    def generate_question(self, filepath, topic, session_uuid):
         chunks = None
         if filepath is not None:
             # load the docs and create chunks
@@ -46,13 +45,17 @@ class AppHelper:
         index = IndexBuilderFAISS(chunks, session_uuid=session_uuid)
         retriever = index.retriever
         self.sbchains = SBChains(retriever)
-        query = ExamPrompt.query
-        print(f'****** query={query}')
-        response = self.sbchains.reason(query)
+        print(f'****** topic={topic}')
+        response = self.sbchains.generate_question(topic)
         json_response = json.loads(response)
         return json_response
     
     def evaluate_question(self, question, ideal_answer, answer):
-        response = self.sbchains.one_step_reason(question, ideal_answer, answer)
+        response = self.sbchains.evaluate_answer(question, ideal_answer, answer)
         json_response = json.loads(response)
         return json_response
+    
+    def find_topics(self, file):
+        retriever = None
+        sbd = SBChains(retriever)
+        return sbd.find_topics(file)

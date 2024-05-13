@@ -27,11 +27,19 @@ def prepare_index():
         session_uuid = 'dev'
         # session_uuid=uuid4().hex[0:8]  # to be uncommented for prod
         session['uuid'] = session_uuid
-        session['total_grade']=0
+        session['total_grade'] = 0
+        session['max_grade'] = 0
         print(f'**** session_uuid={session_uuid}')
         filepath = apphelper.upload_handler(request.files, session_uuid=session_uuid )
         print(f'***** filepath={filepath}')
-        json_response = apphelper.generate_question(filepath, session_uuid)
+        print(f'***** start finding topics')
+        topic_list = apphelper.find_topics(filepath)
+        session['topic_list'] = topic_list
+        last_topic_used = 0
+        session['last_topic_used'] = last_topic_used
+        topic = topic_list[last_topic_used]
+        
+        json_response = apphelper.generate_question(filepath, topic, session_uuid)
         
         print(f'**** json_response={json_response}')
         question = json_response['question']
@@ -44,7 +52,7 @@ def prepare_index():
         print(f'*** model_answer={model_answer}')
         answer = ''
         session['answer'] = answer
-        return render_template('question.html', question=question, answer=answer )
+        return render_template('question.html', question=question, answer=answer, topic=topic )
     else:
         return render_template('index.html')
 
@@ -71,6 +79,8 @@ def chat():
     total_grade = session['total_grade']
     total_grade += grade
     session['total_grade'] = total_grade
+    session['max_grade'] += 10
+    max_grade = session['max_grade']
 
     session['grade'] = grade
     session['answer'] = user_answer
@@ -79,8 +89,9 @@ def chat():
                         question=question, 
                         answer=user_answer, 
                         grade=round(grade, 2), 
-                        total_grade=round(total_grade, 2)
-    )
+                        total_grade=round(total_grade, 2),
+                        max_grade=max_grade)
+    
     
 @app.route('/next', methods=['GET', 'POST'])
 def decide_next_step():
@@ -90,7 +101,13 @@ def decide_next_step():
     if request.form.get('button_action') == 'next':
         print (f'*** next pressed')
         filepath = session['filepath']
-        json_response = apphelper.generate_question(filepath, session["uuid"])
+        topic_list = session['topic_list']
+        last_topic_used = session['last_topic_used'] + 1
+        session['last_topic_used'] = last_topic_used
+        topic = topic_list[last_topic_used]
+        
+        json_response = apphelper.generate_question(filepath, topic, session["uuid"])
+        
         question = json_response['question']
         model_answer = json_response['answer']
         session['question'] = question
@@ -104,9 +121,11 @@ def decide_next_step():
         session['answer'] = answer
         session['grade'] = 0
         
+        
         return render_template('question.html', 
                                question=question, 
-                               answer=answer )
+                               answer=answer,
+                               topic=topic)
     
     elif request.form.get('button_action') == 'explain':
         question = session['question']

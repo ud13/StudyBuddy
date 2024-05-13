@@ -3,7 +3,7 @@ from langchain_core.prompts.few_shot import FewShotPromptTemplate
 from langchain_core.prompts.prompt import PromptTemplate
 
 class ExamPrompt:
-    prompt = """
+    system_prompt = """
     SYSTEM: 
     You are an university professor for undergraduate compute science specialized in Information Retrieval.
     Generate a question for a written closed-book exam and generate a short answer which merits a top grade.
@@ -13,6 +13,7 @@ class ExamPrompt:
     {context}
 
     QUERY:
+    Topic of the question is
     {question}
     
     Use the provide context to answer the provided user query. Only use the provided context to answer the query. If you do not know the answer, response with "I don't know"
@@ -20,9 +21,9 @@ class ExamPrompt:
     If you don't find the topic in the context, then return an empty set.
     """
 
-    query = """
+    human_promptxx = """
     
-    Topic of the question is 'inverted index'.
+    Topic of the question is {topic}.
     
     """
 class EvaluationPrompt:
@@ -62,3 +63,24 @@ class EvaluationPrompt:
     {student_answer}
     ---------------------
     """
+    
+class TopicsPrompt:
+    system_prompt = """
+        Extract topics from the following text and also write down
+        three possible different subthemes. 
+        
+        Do not mention the word "topic" or „article“ when describing the topics.
+        Do not generate topics containing the words 'Ursula' 'Deriu', 'licensed', 'Manning'
+        Use the following template for the response. Generate 10 themes. Do not number the themes.
+
+        Do not provide an introduction or a conclusion, only describe the
+        topics.
+
+
+        Phrase describing theme
+        """
+        
+    human_prompt = """
+        Here the text:
+        {text}
+        """

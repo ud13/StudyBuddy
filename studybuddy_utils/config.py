@@ -2,10 +2,13 @@
 
 
 class Config:
-    # Parameters for embedding  model
-    embeddings_model_name='text-embedding-ada-002'
+    # select the model-type to use openai ud-ir-m
+    embedding_type='ud-ir-m'
+    # Parameters for embedding  model OpenAI
+    # embeddings_model_name='text-embedding-ada-002'
+    embeddings_model_name='uderiu/snowflake-ft-ir2-m'
+    # embeddings_model_size=1536   
     # embeddings_model_name='text-embedding-3-small'
-    embeddings_model_size=1536
 
     # parameters for collection and store
     collection_name='test_collection'
