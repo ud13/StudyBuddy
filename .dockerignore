@@ -1,3 +1,9 @@
 # Exclude all PDF files
 *.pdf 
 storage*
+local/
+storage*/
+data/
+aaa_tbd
+.DS_Store
+uploads/
