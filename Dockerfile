@@ -19,6 +19,7 @@ RUN pip install openai==1.23.6
 RUN pip install tiktoken==0.6.0
 RUN pip install python-dotenv==1.0.1
 RUN pip install qdrant-client==1.9.0
+RUN pip install pypdf==4.2.0
 RUN pip install langchain==0.1.17
 RUN pip install langchain-core==0.1.52
 RUN pip install langchain-community==0.0.37
@@ -26,10 +27,14 @@ RUN pip install langchain-openai==0.1.6
 RUN pip install pymupdf==1.24.2
 RUN pip install Flask==3.0.3
 RUN pip install sentence_transformers==2.7.0
+RUN pip install faiss-cpu==1.8.0
 COPY . .
+# Dirty hack to make it work
+USER root
 # Set an environment variable for the port (optional)
 ENV FLASK_RUN_PORT=8000
+
 # Expose the port Flask will run on
 EXPOSE 8000
 
-CMD ["flask", "run", "--port", "8000"]
+CMD ["flask", "run", "--host", "0.0.0.0", "--port", "8000"]

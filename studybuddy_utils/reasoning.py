@@ -67,7 +67,7 @@ class SBChains:
         llm = OpenAI(temperature=0, max_tokens=500)
         chain = load_summarize_chain(llm, chain_type=chain_type)  # Specify map_reduce
 
-        summary = chain.run(texts)
+        summary = chain.invoke(texts)
         
         # extract topics from the summary
         topics_prompt = ChatPromptTemplate.from_messages([
