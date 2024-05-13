@@ -11,24 +11,48 @@
          <img src='static/sb_icon.png' class=logo>
     </div>
     <div class=content>
-        <h3>Your Grade</h3>
+        <h3>Explanation for Your Grade</h3>
         <div class=question>
-            The question:<br>
-            {{ question }} <br><br>
-            Your answer:  <br>
-            {{ answer }} <br><br>
-            Grade for your answer: <b><big>{{ grade }}</big></b> 
-            Your total grade: <b><big>{{ total_grade}}</big></b>  <br>
+            <h3>The question:</h3>
+            {{ question }} 
+            <h3>Your answer:  </h3>
+            {{ answer }} 
+            <h3>Baseline for grading: </h3>
+            {{ model_answer }} <br><br>
+            Grade for your answer: <b><big>{{ grade }} / 10 </big></b><br>
+            Your total grade: <b><big>{{ total_grade}} / {{ total_grade }}</big></b>  <br>
         </div>
         <div class=explanation>
-            Explanation:<br>
-            {{ explanation }} <br><br>
+            <h3>Explanation:</h3>
+            Based on the baseline answer StudyBuddy scored the answer you provided as follows:
+            <p>
+                <ul>
+                <li>Correctness: {{ correctness }} / 10   </li>
+                <li>Clarity: {{ clarity }} / 10 </li>
+                <li>Relatedness: {{ faithfulness }} /10 </li>
+                </ul>
+                <p class=topic>
+                <b>Correctness</b>: was the answer correcty<br>
+                <b>Clarity</b>: how clear was the answer<br>
+                <b>Relatedness</b>: how related was the answer to the original query is the response
+            </p>
+            <p>
+            The final grade is computed according to this formula:
+            </p>
+            <p>
+            <i>grade = 0.9 * correctness + 0.05 * clarity + 0.05 * relatedness</i>
+            </p>
+            <h4 class='topic'>StudyBuddy's Explanation for Scoring </h4>
+            <p>
+                {{ explanation }}
+            </p>
+            <span class=topic>Please note: StudyBuddy is an AI and might be incorrect or incomplete.</span>
         </div>
         <div class=answer>
             <form method="post" action="/next"> 
                 <button type="submit" name="button_action" class=button value="next">next question</button>
-                <button type="submit" name="button_action" class=button value="comment">give a comment</button>
-                <button type="submit" name="button_action" class=button value="end">end</button>
+                <!-- button type="submit" name="button_action" class=button value="comment">give a comment</button -->
+                <!-- button type="submit" name="button_action" class=button value="end">end</button -->
             </form>
         </div>
     <div>

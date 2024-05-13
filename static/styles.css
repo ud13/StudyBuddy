@@ -12,6 +12,11 @@ h3 {
     font-style: italic;
     font-weight: 800;
 }
+h3 {
+    font-style: italic;
+    font-weight: 800;
+    font-size: smaller;
+}
 .logo {
     width: 100%;
     height: 100%;
@@ -69,3 +74,7 @@ input[type="file"]::file-selector-button
     border-radius: 10px;   /* Add rounded corners */
     resize: both;         /* Allow resizing (optional) */
   }
+.topic {
+    color: #F7C164;
+    font-size: small
+}

@@ -39,7 +39,6 @@ class SBChains:
         )
 
         response = retrieval_augmented_qa_chain.invoke({"question" : question})
-        print(f'***** response={response["response"].content}')
         return response['response'].content
     
     def evaluate_answer(self, question, ideal_answer, answer):

@@ -1,11 +1,12 @@
-FROM python:3.11-slim-buster
+# tbd complete and test it
+FROM python:3.11
 RUN useradd -m -u 1000 user
 USER user
 ENV HOME=/home/user \
     PATH=/home/user/.local/bin:$PATH
 WORKDIR $HOME/app
 COPY --chown=user . $HOME/app
-RUN chmod -R 777 /home/user
+# RUN chmod -R 777 /home/user
 COPY ./requirements.txt ~/app/requirements.txt
 # RUN pip install -r requirements.txt
 RUN pip install numpy==1.26.4
@@ -31,4 +32,4 @@ ENV FLASK_RUN_PORT=8000
 # Expose the port Flask will run on
 EXPOSE 8000
 
-CMD ["flask", "run", "--host","0.0.0.0", "--port", "8000"]
+CMD ["flask", "run", "--port", "8000"]

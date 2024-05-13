@@ -47,9 +47,11 @@ def prepare_index():
         session['question'] = question
         session['model_answer'] = model_answer
         session['filepath'] = filepath
-        
+        print("")
         print(f'*** question={question}')
+        print("")
         print(f'*** model_answer={model_answer}')
+        print("")
         answer = ''
         session['answer'] = answer
         return render_template('question.html', question=question, answer=answer, topic=topic )
@@ -73,6 +75,11 @@ def chat():
     clarity = json_response['clarity']
     faithfulness = json_response['faithfulness']
     correctness = json_response['correctness']
+    
+    session['clarity'] = clarity
+    session['faithfulness'] = faithfulness
+    session['correctness'] = correctness
+    session['explanation'] = json_response['explanation']
     
     grade = 0.9 * correctness + 0.05 * clarity + 0.05 * faithfulness
     
@@ -133,12 +140,22 @@ def decide_next_step():
         grade = session['grade']
         total_grade = session['total_grade']
         explanation = 'my explanation' #tbd generieren
+        model_answer = session['model_answer']
+        clarity = session['clarity']
+        faithfulness = session['faithfulness'] 
+        correctness = session['correctness']
+        explanation = session['explanation']
         return render_template('explain.html', 
                                question=question, 
                                answer=answer, 
-                               grade=grade, 
-                               total_grade=total_grade,
-                               explanation=explanation)
+                               grade=round(grade,2), 
+                               total_grade=round(total_grade,2),
+                               explanation=explanation,
+                               model_answer=model_answer,
+                               clarity=round(clarity,2),
+                               faithfulness=round(faithfulness,2),
+                               correctness=round(correctness,2),
+                               )
  
     elif request.form.get('button_action') == 'history':
         # Code to handle the "Delete" actio

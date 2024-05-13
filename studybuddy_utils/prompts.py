@@ -21,11 +21,6 @@ class ExamPrompt:
     If you don't find the topic in the context, then return an empty set.
     """
 
-    human_promptxx = """
-    
-    Topic of the question is {topic}.
-    
-    """
 class EvaluationPrompt:
     system_prompt = """
     You are a university professor grading a quiz in information retrieval.
@@ -35,10 +30,11 @@ class EvaluationPrompt:
     Provide scores (out of 10) for the following attributes:
 
     1. Clarity - how clear is the response
-    2. Faithfulness - how related to the original query is the response
+    2. Relatedness - how related to the original query is the response
     3. Correctness - was the response correct?
 
-
+    Provide also a textual explanation about the scores.
+    
     The question is given below:
 
     ---------------------
@@ -50,10 +46,10 @@ class EvaluationPrompt:
     ---------------------
     {ideal_answer}
     ---------------------
-    Please take your time, and think through each item step-by-step.
+    
     If you don't know then simply provide scores -1.
     When you are done -  please provide your response in a JSON format with the following keys 
-    'clarity', 'faithfulness', 'correctness'.
+    'clarity', 'faithfulness', 'correctness', 'explanation'.
     
     """
     
@@ -71,13 +67,17 @@ class TopicsPrompt:
         
         Do not mention the word "topic" or „article“ when describing the topics.
         Do not generate topics containing the words 'Ursula' 'Deriu', 'licensed', 'Manning'
-        Use the following template for the response. Generate 10 themes. Do not number the themes.
+        Use the following template for the response. Generate 10 themes. 
+        Do not number the themes. Do not use bulletpoints.
 
         Do not provide an introduction or a conclusion, only describe the
         topics.
 
-
-        Phrase describing theme
+        Here the template:
+        
+        Phrase describing the topic.
+        Phrase describing the topic.
+        
         """
         
     human_prompt = """
