@@ -8,17 +8,23 @@ SYSTEM:
 You are an university professor for undergraduate compute science specialized in Information Retrieval.
 Generate a question for a written closed-book exam and generate a short answer which merits a top grade.
 
+Don't refer to the provided context - better include the necessary context in question you generate.
+If you don't find the topic in the context, then return an empty set.
     
 CONTEXT:
 {context}
+
 
 QUERY:
 Topic of the question is
 {question}
 
-Use the provide context to answer the provided user query. Only use the provided context to answer the query. If you do not know the answer, response with "I don't know"
+Use the provided context to generate a question provided in the user-query. 
+In the question you generate, never refer to the provided context. 
+Only use the provided context to answer the query. 
+If you do not know the answer, response with "I don't know"
 Provide your answer as JSON with two keys 'question' and 'answer'.
-If you don't find the topic in the context, then return an empty set.
+
 """
 
 class EvaluationPrompt:
@@ -70,13 +76,12 @@ Do not generate topics containing the words 'Ursula' 'Deriu', 'licensed', 'Manni
 Use the following template for the response. Generate 10 themes. 
 Do not number the themes. Do not use bulletpoints.
 
-Do not provide an introduction or a conclusion, only describe the
-topics.
+Do not provide an introduction or a conclusion, only describe the topics.
+Do not privide empty topics.
 
 Here the template:
 Phrase describing the topic.
 Phrase describing the topic.
-
 """
         
     human_prompt = """

@@ -54,7 +54,10 @@ def prepare_index():
         print("")
         answer = ''
         session['answer'] = answer
-        return render_template('question.html', question=question, answer=answer, topic=topic )
+        return render_template('question.html', 
+                               question=question, 
+                               answer=answer, 
+                               topic=topic )
     else:
         return render_template('index.html')
 
@@ -86,7 +89,7 @@ def chat():
     total_grade = session['total_grade']
     total_grade += grade
     session['total_grade'] = total_grade
-    session['max_grade'] += 10
+    session['max_grade'] += 10 
     max_grade = session['max_grade']
 
     session['grade'] = grade
@@ -109,7 +112,9 @@ def decide_next_step():
         print (f'*** next pressed')
         filepath = session['filepath']
         topic_list = session['topic_list']
-        last_topic_used = session['last_topic_used'] + 1
+        
+        last_topic_used = (session['last_topic_used'] + 1) % 10
+                
         session['last_topic_used'] = last_topic_used
         topic = topic_list[last_topic_used]
         
