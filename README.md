@@ -12,12 +12,14 @@ license: apache-2.0
 # StudyBuddy
 
 Project for DemoDay at AI Makerspace - AI Engineering Bootcamp - Cohort 2
+
 See my final presentation on Youtube
 
 # The code works in a local environment
-git clone and run with
+git clone 
 
-install your credentials .env in the root directory
+
+install your credentials .env in the root directory:
 OPENAI_API_KEY=sk-...
 LLAMA_CLOUD_API_KEY=llx-...
 HF_TOKEN=hf_...
