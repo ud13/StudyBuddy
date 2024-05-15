@@ -155,6 +155,7 @@ def decide_next_step():
                                answer=answer, 
                                grade=round(grade,2), 
                                total_grade=round(total_grade,2),
+                               max_grade=session['max_grade'],
                                explanation=explanation,
                                model_answer=model_answer,
                                clarity=round(clarity,2),
@@ -173,6 +174,6 @@ def decide_next_step():
 
 
 if __name__ == '__main__':
-    app.run(port=8000, debug=True)    
+    app.run(host='.0.0.0.0', port=7860, debug=True)    
     
     

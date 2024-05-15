@@ -1,7 +1,7 @@
 # Loading, from studybuddy_utils.config import ConfigCleaning, Chunking
 from studybuddy_utils.config import Config
 from langchain_openai.embeddings import OpenAIEmbeddings
-from langchain.document_loaders import PyMuPDFLoader
+from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 import tiktoken
 
@@ -21,8 +21,8 @@ class SBDocLoader:
     # tbd use LlamaIndex here?
     # tbd is async possible or necessary?
     def load_and_parse_pdf(self, path):
-        docs = PyMuPDFLoader(path).load()
-        chunks = self.chunk_docs(docs)
+        loader = PyPDFLoader(path)
+        chunks = loader.load_and_split()
         return(chunks)
     
     # length function for the text_splitter

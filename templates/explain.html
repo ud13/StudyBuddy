@@ -20,7 +20,7 @@
             <h3>Baseline for grading: </h3>
             {{ model_answer }} <br><br>
             Grade for your answer: <b><big>{{ grade }} / 10 </big></b><br>
-            Your total grade: <b><big>{{ total_grade}} / {{ total_grade }}</big></b>  <br>
+            Your total grade: <b><big>{{ total_grade}} / {{ max_grade }}</big></b>  <br>
         </div>
         <div class=explanation>
             <h3>Explanation:</h3>
@@ -32,7 +32,7 @@
                 <li>Relatedness: {{ faithfulness }} /10 </li>
                 </ul>
                 <p class=topic>
-                <b>Correctness</b>: was the answer correcty<br>
+                <b>Correctness</b>: was the answer correct<br>
                 <b>Clarity</b>: how clear was the answer<br>
                 <b>Relatedness</b>: how related was the answer to the original query is the response
             </p>

@@ -63,7 +63,6 @@ class SBChains:
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
         texts = text_splitter.split_documents(documents)
 
-        # Initialize LLM (Replace 'YOUR_API_KEY' with your actual OpenAI API key)
         llm = OpenAI(temperature=0, max_tokens=500)
         chain = load_summarize_chain(llm, chain_type=chain_type)  # Specify map_reduce
 
