@@ -12,9 +12,10 @@ from studybuddy_utils.models import SBChatModel
 from langchain_core.prompts import ChatPromptTemplate
 
 from langchain.chains.summarize import load_summarize_chain
-from langchain.document_loaders import PyPDFLoader
+from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.llms import OpenAI
+from langchain_community.llms import OpenAI
+
 
 class SBChains:
     def __init__(self, retriever):
@@ -66,8 +67,8 @@ class SBChains:
         llm = OpenAI(temperature=0, max_tokens=500)
         chain = load_summarize_chain(llm, chain_type=chain_type)  # Specify map_reduce
 
-        summary = chain.invoke(texts)
-        
+        summary = chain.invoke(texts)['output_text']
+         
         # extract topics from the summary
         topics_prompt = ChatPromptTemplate.from_messages([
                     ("system", TopicsPrompt.system_prompt),
@@ -77,9 +78,9 @@ class SBChains:
         
         response = chain.invoke({"text": summary})
         list_of_topics = response.content.split('\n')
-        print(list_of_topics)
+
         # tbd enhancce this list to contain tuples (topic, counter)
-        # inti the counter with 0 - augment the counter each time 
+        # init the counter with 0 - augment the counter each time 
         # the topic is used. 
         # Start with simple questions, for counter=0 - then medium questions 
         # for counter=1 etc
